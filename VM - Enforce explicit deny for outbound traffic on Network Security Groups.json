@@ -1,0 +1,54 @@
+{
+  "parameters": {},
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Network/networkSecurityGroups"
+        },
+        {
+          "count": {
+            "field": "Microsoft.Network/networkSecurityGroups/securityRules[*]",
+            "where": {
+              "allOf": [
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].protocol",
+                  "equals": "*"
+                },
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].sourcePortRange",
+                  "equals": "*"
+                },
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].destinationPortRange",
+                  "equals": "*"
+                },
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].sourceAddressPrefix",
+                  "equals": "*"
+                },
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].access",
+                  "equals": "Deny"
+                },
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].priority",
+                  "lessOrEquals": 4096
+                },
+                {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].direction",
+                  "equals": "Outbound"
+                }
+              ]
+            }
+          },
+          "Equals": 0
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "parameters": {
+    "allowedAddressRanges": {
+      "type": "Array",
+      "metadata": {
+        "displayName": "Address Range",
+        "description": "The list of allowed IP address "
+      },
+      "defaultValue": [
+        "0.0.0.0/24"
+      ]
+    }
+  },
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.KeyVault/vaults"
+        },
+        {
+          "count": {
+            "field": "Microsoft.KeyVault/vaults/networkAcls.ipRules[*]",
+            "where": {
+              "allOf": [
+                {
+                  "field": "Microsoft.KeyVault/vaults/networkAcls.ipRules[*].value",
+                  "notIn": "[parameters('allowedAddressRanges')]"
+                }
+              ]
+            }
+          },
+          "notEquals": 0
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  }
+}

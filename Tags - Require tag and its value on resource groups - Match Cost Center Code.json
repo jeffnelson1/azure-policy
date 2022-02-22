@@ -1,0 +1,44 @@
+{
+  "parameters": {
+    "tagName": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Tag Name",
+        "description": "Name of the tag, such as 'environment'"
+      }
+    },
+    "allowedCostCenters": {
+      "type": "Array",
+      "metadata": {
+        "displayName": "Allowed cost center codes",
+        "description": "The list of allowed cost center codes."
+      },
+      "allowedValues": [
+        "00001",
+        "00002"
+      ],
+      "defaultValue": [
+        "00001"
+      ]
+    }
+  },
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "not": {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "in": "[parameters('allowedCostCenters')]"
+          }
+        },
+        {
+          "field": "type",
+          "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "parameters": {},
+  "policyRule": {
+    "if": {
+      "equals": "Microsoft.Resources/subscriptions",
+      "field": "type"
+    },
+    "then": {
+      "details": {
+        "type": "Microsoft.Insights/diagnosticSettings",
+        "existenceCondition": {
+          "allOf": [
+            {
+              "count": {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*]",
+                "where": {
+                  "allOf": [
+                    {
+                      "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+                      "equals": "True"
+                    },
+                    {
+                      "field": "Microsoft.Insights/diagnosticSettings/logs[*].category",
+                      "equals": "Alert"
+                    }
+                  ]
+                }
+              },
+              "greater": 0
+            }
+          ]
+        }
+      },
+      "effect": "auditIfNotExists"
+    }
+  }
+}

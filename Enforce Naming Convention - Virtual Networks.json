@@ -1,0 +1,35 @@
+{
+	"mode": "all",
+	"policyType": "Custom",
+	"policyRule": {
+		"if": {
+			"allOf": [
+				{
+					"source": "action",
+					"equals": "Microsoft.Network/virtualNetworks/write"
+				},
+				{
+					"not": {
+						"anyOf": [
+							{
+								"field": "name",
+								"like": "vnet-*-hub"
+							},
+							{
+								"field": "name",
+								"like": "vnet-*-spoke"
+							}
+						]
+					}
+				},
+				{
+					"field": "type",
+					"equals": "Microsoft.Network/virtualNetworks"
+				}
+			]
+		},
+		"then": {
+			"effect": "deny"
+		}
+	}
+}
