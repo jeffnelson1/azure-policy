@@ -1,0 +1,42 @@
+{
+  "parameters": {},
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Compute/virtualMachines"
+        },
+        {
+          "field": "Microsoft.Compute/imagePublisher",
+          "in": [
+            "Canonical",
+            "cognosys"
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "AuditIfNotExists",
+      "details": {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "existenceCondition": {
+          "allOf": [
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/type",
+              "equals": "DatadogLinuxAgent"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/publisher",
+              "equals": "Datadog.Agent"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/provisioningState",
+              "equals": "Succeeded"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

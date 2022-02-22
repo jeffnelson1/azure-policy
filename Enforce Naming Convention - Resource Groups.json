@@ -1,0 +1,35 @@
+{
+	"mode": "all",
+	"policyType": "Custom",
+	"policyRule": {
+		"if": {
+			"allOf": [
+				{
+					"source": "action",
+					"equals": "Microsoft.Resources/subscriptions/resourceGroups/write"
+				},
+				{
+					"not": {
+						"anyOf": [
+							{
+								"field": "name",
+								"like": "rg-*-test"
+							},
+							{
+								"field": "name",
+								"like": "rg-*-dev"
+							}
+						]
+					}
+				},
+				{
+					"field": "type",
+					"equals": "Microsoft.Resources/subscriptions/resourceGroups"
+				}
+			]
+		},
+		"then": {
+			"effect": "deny"
+		}
+	}
+}

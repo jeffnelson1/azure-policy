@@ -1,0 +1,22 @@
+{
+  "parameters": {},
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.KeyVault/vaults"
+        },
+        {
+          "count": {
+            "field": "Microsoft.KeyVault/vaults/networkAcls.ipRules[*]"
+          },
+          "notEquals": 21
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  }
+}
